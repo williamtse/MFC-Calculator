@@ -50,6 +50,7 @@ END_MESSAGE_MAP()
 
 CCalculatorDlg::CCalculatorDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CCalculatorDlg::IDD, pParent)
+	, n_mInput(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	Reset();
@@ -65,6 +66,7 @@ void CCalculatorDlg::Reset(){
 void CCalculatorDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_EDIT1, n_mInput);
 }
 
 BEGIN_MESSAGE_MAP(CCalculatorDlg, CDialog)
@@ -204,9 +206,8 @@ void CCalculatorDlg::TypeNumber(LPCTSTR number){
 }
 
 void CCalculatorDlg::SetOperator(int nID){
-	CString csr;
-	GetDlgItem(IDC_EDIT1)->GetWindowTextW(csr);
-	num = (float) _wtof(csr);
+	UpdateData(TRUE);
+	num = n_mInput;
 	result = num;
 	_operator = nID;
 	_isNewNum = TRUE;
@@ -274,9 +275,8 @@ void CCalculatorDlg::OnBnClickedButtonN0()
 void CCalculatorDlg::OnBnClickedButtonEqual()
 {
 	//当前文本框中的数
-	CString csr;
-	GetDlgItem(IDC_EDIT1)->GetWindowTextW(csr);
-	num = (float) _wtof(csr);
+	UpdateData(TRUE);
+	num = n_mInput;
 	//计算
 	switch(_operator){
 		case IDC_BUTTON_PLUS:
@@ -292,9 +292,11 @@ void CCalculatorDlg::OnBnClickedButtonEqual()
 			result = result/num;
 			break;
 	}
-	CString szA;
-	szA.Format(_T("%1.2f"),result);
-	GetDlgItem(IDC_EDIT1)->SetWindowText(szA);
+	//CString szA;
+	//szA.Format(_T("%1.2f"),result);
+	//GetDlgItem(IDC_EDIT1)->SetWindowText(szA);
+	n_mInput = result;
+	UpdateData(FALSE);
 	_isNewNum = TRUE;
 }
 

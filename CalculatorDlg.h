@@ -55,4 +55,5 @@ public:
 	afx_msg void OnBnClickedButtonNd();
 	afx_msg void OnBnClickedButtonMr();
 	void Reset();
+	float n_mInput;
 };
